@@ -1,3 +1,5 @@
-.header {
-    background-color: red;
+.cartButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }

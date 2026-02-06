@@ -1,26 +1,14 @@
 import classes from './Products.module.css'
 import {Spinner} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import ProductCard from "./ProductCard.tsx";
-
-interface Product {
-    category: string;
-    description: string;
-    id: number
-    image: string;
-    price: number;
-    rating: {
-        rate: number;
-        count: number;
-    }
-    title: string;
-    isInCart: boolean;
-}
+import ProductsCartContext from "../../contexts/products-cart/ProductsCartContext.tsx";
+import type {Product} from "./products.types.ts";
 
 function ProductList() {
     const [products, setProducts] = useState<Product[]>([])
-    const [productsIdsInCart, setProductsIdsInCart] = useState<number[]>([])
     const [productsLoading, setProductsLoading] = useState<boolean>(false)
+    const { productsIdsInCart, addProductsToCart, removeProductsFromCart } = useContext(ProductsCartContext)
 
     console.log(products)
     console.log(productsIdsInCart)
@@ -43,13 +31,7 @@ function ProductList() {
     }, [])
 
     function addToCart(id: number) {
-        const alreadyInCart = productsIdsInCart.some(productId => productId === id)
-
-        if (alreadyInCart) {
-            return
-        }
-        // добавляем id продукта в корзину
-        setProductsIdsInCart([...productsIdsInCart, id])
+        addProductsToCart(id)
 
         // меняю поле isInCart у конкретного продукта в массиве products
         const foundProduct = products.find(d => d.id === id)
@@ -60,8 +42,7 @@ function ProductList() {
     }
 
     function removeFromCart(id: number) {
-        // убираем id продукта из корзины
-        setProductsIdsInCart(productsIdsInCart.filter(productId => productId !== id))
+        removeProductsFromCart(id)
 
         // меняю поле isInCart у конкретного продукта в массиве products
         const foundProduct = products.find(d => d.id === id)
