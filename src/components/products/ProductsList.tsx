@@ -18,7 +18,7 @@ function ProductList() {
             setProductsLoading(true)
             const response = await fetch("https://fakestoreapi.com/products")
             const data = await response.json() as Product[]
-            setProducts(data.map(d => ({ ...d, isInCart: false })))
+            setProducts(data.map(d => ({ ...d, isInCart: productsIdsInCart.includes(d.id) })))
         } catch (err) {
             console.log(err)
         } finally {
@@ -66,6 +66,8 @@ function ProductList() {
                             title={p.title}
                             image={p.image}
                             description={p.description}
+                            rating={p.rating.rate}
+                            price={p.price}
                             isInCart={p.isInCart}
                             addToCart={addToCart}
                             removeFromCart={removeFromCart}
