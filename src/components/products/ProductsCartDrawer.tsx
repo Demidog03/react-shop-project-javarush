@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import ProductsCartContext from "../../contexts/products-cart/ProductsCartContext.tsx";
 import type {Product} from "./products.types.ts";
 import classes from "./Products.module.css";
+import {useNavigate} from "react-router";
 
 interface ProductsCartDrawerProps {
     open: boolean
@@ -10,6 +11,7 @@ interface ProductsCartDrawerProps {
 }
 
 function ProductsCartDrawer({ open, handleClose }: ProductsCartDrawerProps) {
+    const navigate = useNavigate()
     const [cartProducts, setCartProducts] = useState<Product[]>([])
     const { productsIdsInCart } = useContext(ProductsCartContext)
     const [productsLoading, setProductsLoading] = useState<boolean>(false)
@@ -41,7 +43,10 @@ function ProductsCartDrawer({ open, handleClose }: ProductsCartDrawerProps) {
         }
     }
 
-    console.log(productsLoading)
+    function goToDetailsPage(id: number) {
+        navigate(`/product-details/${id}`)
+        handleClose()
+    }
 
     useEffect(() => {
         if (open) {
@@ -81,12 +86,14 @@ function ProductsCartDrawer({ open, handleClose }: ProductsCartDrawerProps) {
                             key={index}
                             as="li"
                             className="d-flex justify-content-between align-items-center"
+                            onClick={() => goToDetailsPage(product.id)}
+                            style={{ cursor: 'pointer' }}
                         >
                             <div className={classes.productCartItemContent}>
                                 <img className={classes.productCartItemImage} src={product.image} alt={product.title}/>
                                 <div className="ms-2 me-auto">
                                     <div className={classes.productCartItemTitle}>{product.title}</div>
-                                    <span className={classes.productCartItemPrice}>${product.price} <span className={classes.productCartItemPriceFake}>${product.price * 1.5}</span></span>
+                                    <span className={classes.productCartItemPrice}>${product.price} <span className={classes.productCartItemPriceFake}>${(product.price * 1.5).toFixed(2)}</span></span>
                                 </div>
                             </div>
                             <Badge bg="primary" pill>

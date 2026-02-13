@@ -37,7 +37,7 @@ function ProductCard({ title, image, description, id, addToCart, isInCart, remov
                             ${price}
                         </span>
                         <span className={classes.cardPriceFake}>
-                            ${price * 1.5}
+                            ${(price * 1.5).toFixed(2)}
                         </span>
                     </div>
                     <Rating

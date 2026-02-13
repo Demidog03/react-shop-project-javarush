@@ -10,9 +10,6 @@ function ProductList() {
     const [productsLoading, setProductsLoading] = useState<boolean>(false)
     const { productsIdsInCart, addProductsToCart, removeProductsFromCart } = useContext(ProductsCartContext)
 
-    console.log(products)
-    console.log(productsIdsInCart)
-
     async function fetchProducts() {
         try {
             setProductsLoading(true)
