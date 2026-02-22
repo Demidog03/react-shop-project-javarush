@@ -4,6 +4,7 @@ import classes from './SignUpPage.module.css'
 import CustomPassword from "../../shared/ui/CustomPassword.tsx";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
+import {useNavigate} from "react-router";
 
 const LoginFormSchema = Yup.object().shape({
     name: Yup.string().max(150, 'Name must be at most 150 characters').required('Name is required'),
@@ -36,6 +37,7 @@ interface FormValues {
 }
 
 function SignUpPage() {
+    const navigate = useNavigate()
     const { values, errors, handleSubmit, handleChange, isValid, dirty, resetForm, handleBlur } = useFormik<FormValues>({
         initialValues: {
             name: '',
@@ -50,6 +52,10 @@ function SignUpPage() {
         validationSchema: LoginFormSchema,
         validateOnBlur: true
     })
+
+    function goToSignInPage() {
+        navigate('/sign-in')
+    }
 
     return (
         <MainLayout>
@@ -93,6 +99,7 @@ function SignUpPage() {
                     <Button disabled={!isValid || !dirty} variant="primary" type="submit">
                         Submit
                     </Button>
+                    <Button onClick={goToSignInPage} variant="link">Already have an account? Sign in</Button>
                 </Form>
             </div>
         </MainLayout>

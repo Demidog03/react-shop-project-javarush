@@ -1,55 +1,33 @@
 import MainLayout from "../../layouts/MainLayout.tsx";
 import {useParams} from "react-router";
-import {useContext, useEffect, useState} from "react";
-import type {Product} from "../../components/products/products.types.ts";
+import {useContext} from "react";
 import {Button, Card, Placeholder} from "react-bootstrap";
 import classes from './ProductDetailsPage.module.css'
 import {Rating} from "@smastrom/react-rating";
 import {BsCartDashFill, BsCartPlusFill} from "react-icons/bs";
 import ProductsCartContext from "../../contexts/products-cart/ProductsCartContext.tsx";
+import useGetProductByIdQuery from "../../queries/products/useGetProductByIdQuery.tsx";
 
 function ProductDetailsPage() {
-    const [product, setProduct] = useState<Product>()
-    const [loading, setLoading] = useState<boolean>(false)
     const { productsIdsInCart, addProductsToCart, removeProductsFromCart } = useContext(ProductsCartContext)
     const { id } = useParams()
-
-    async function fetchProduct(id: string) {
-        try {
-            setLoading(true)
-            const response = await fetch(`https://fakestoreapi.com/products/${id}`)
-            const data = await response.json() as Product
-            setProduct({ ...data, isInCart: productsIdsInCart.includes(data.id) })
-        }
-        catch (error) {
-            console.log(error)
-        }
-        finally {
-            setLoading(false)
-        }
-    }
+    const { data: product, isLoading: loading } = useGetProductByIdQuery(id)
 
     function removeFromCart(id: number | undefined) {
         if (id && product) {
             removeProductsFromCart(id)
-            product.isInCart = false
-            setProduct({ ...product })
+            // product.isInCart = false
+            // setProduct({ ...product })
         }
     }
 
     function addToCart(id: number | undefined) {
         if (id && product) {
             addProductsToCart(id)
-            product.isInCart = true
-            setProduct({ ...product })
+            // product.isInCart = true
+            // setProduct({ ...product })
         }
     }
-
-    useEffect(() => {
-        if (id) {
-            void fetchProduct(id)
-        }
-    }, [id])
 
     return (
         <MainLayout>

@@ -21,10 +21,14 @@ function Header({ openCartDrawer }: HeaderProps) {
         navigate('/sign-in')
     }
 
+    function loadProductsPage() {
+        import('../../pages/products/ProductsPage.tsx')
+    }
+
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand onClick={goHome} style={{ cursor: 'pointer' }}>Shop.com</Navbar.Brand>
+                <Navbar.Brand onMouseEnter={loadProductsPage} onClick={goHome} style={{ cursor: 'pointer' }}>Shop.com</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
