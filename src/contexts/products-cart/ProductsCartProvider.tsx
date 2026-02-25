@@ -9,7 +9,7 @@ interface ProductsCartProviderProps {
 const storageService = new StorageService()
 
 function ProductsCartProvider({ children }: ProductsCartProviderProps) {
-    const initialValue = JSON.parse(storageService.get('productsIdsInCart') || '[]') as number[]
+    const initialValue = storageService.get('productsIdsInCart') || [] as number[]
     const [productsIdsInCart, setProductsIdsInCart] = useState<number[]>(initialValue)
 
     function addProductsToCart(id: number) {

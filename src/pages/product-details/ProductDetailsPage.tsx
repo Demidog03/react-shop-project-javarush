@@ -1,31 +1,32 @@
 import MainLayout from "../../layouts/MainLayout.tsx";
 import {useParams} from "react-router";
-import {useContext} from "react";
+import {useMemo} from "react";
 import {Button, Card, Placeholder} from "react-bootstrap";
 import classes from './ProductDetailsPage.module.css'
 import {Rating} from "@smastrom/react-rating";
 import {BsCartDashFill, BsCartPlusFill} from "react-icons/bs";
-import ProductsCartContext from "../../contexts/products-cart/ProductsCartContext.tsx";
 import useGetProductByIdQuery from "../../queries/products/useGetProductByIdQuery.tsx";
+import {addProductsToCart, removeProductsFromCart} from "../../slices/cart-slice.ts";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
 
 function ProductDetailsPage() {
-    const { productsIdsInCart, addProductsToCart, removeProductsFromCart } = useContext(ProductsCartContext)
+    const dispatch = useAppDispatch()
+    const { productsIdsInCart } = useAppSelector(state => state.cart)
     const { id } = useParams()
-    const { data: product, isLoading: loading } = useGetProductByIdQuery(id)
+    const { data: serverProduct, isLoading: loading } = useGetProductByIdQuery(id)
+    const product = useMemo(() => {
+        return { ...serverProduct, isInCart: productsIdsInCart.includes(serverProduct?.id ?? 0)}
+    }, [productsIdsInCart, serverProduct])
 
     function removeFromCart(id: number | undefined) {
         if (id && product) {
-            removeProductsFromCart(id)
-            // product.isInCart = false
-            // setProduct({ ...product })
+            dispatch(removeProductsFromCart(id))
         }
     }
 
     function addToCart(id: number | undefined) {
         if (id && product) {
-            addProductsToCart(id)
-            // product.isInCart = true
-            // setProduct({ ...product })
+            dispatch(addProductsToCart(id))
         }
     }
 
@@ -53,7 +54,7 @@ function ProductDetailsPage() {
                                     <Card.Text className={classes.ratingContainer}>
                                         <Rating
                                             style={{ width: '50%', maxWidth: 300 }}
-                                            value={product?.rating.rate ?? 0}
+                                            value={product?.rating?.rate ?? 0}
                                             readOnly
                                         />
                                         <span className={classes.ratingCount}>({product?.rating?.count})</span>

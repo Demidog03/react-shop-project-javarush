@@ -1,34 +1,25 @@
 import classes from './Products.module.css'
 import {Spinner} from "react-bootstrap";
-import {useContext} from "react";
+import {useMemo} from "react";
 import ProductCard from "./ProductCard.tsx";
-import ProductsCartContext from "../../contexts/products-cart/ProductsCartContext.tsx";
 import useGetProductsQuery from "../../queries/products/useGetProductsQuery.tsx";
+import {addProductsToCart, removeProductsFromCart} from "../../slices/cart-slice.ts";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
 
 function ProductList() {
-    const { data: products, isLoading: productsLoading } = useGetProductsQuery()
-    const { productsIdsInCart, addProductsToCart, removeProductsFromCart } = useContext(ProductsCartContext)
+    const dispatch = useAppDispatch()
+    const { data: serverProducts, isLoading: productsLoading } = useGetProductsQuery()
+    const { productsIdsInCart } = useAppSelector(state => state.cart)
+    const products = useMemo(() => {
+        return serverProducts?.map(p => ({ ...p, isInCart: productsIdsInCart.includes(p.id) }))
+    }, [productsIdsInCart, serverProducts])
 
     function addToCart(id: number) {
-        addProductsToCart(id)
-
-        // меняю поле isInCart у конкретного продукта в массиве products
-        // const foundProduct = products.find(d => d.id === id)
-        // if (foundProduct) {
-        //     foundProduct.isInCart = true
-        // }
-        // setProducts([...products])
+        dispatch(addProductsToCart(id))
     }
 
     function removeFromCart(id: number) {
-        removeProductsFromCart(id)
-
-        // меняю поле isInCart у конкретного продукта в массиве products
-        // const foundProduct = products.find(d => d.id === id)
-        // if (foundProduct) {
-        //     foundProduct.isInCart = false
-        // }
-        // setProducts([...products])
+        dispatch(removeProductsFromCart(id))
     }
 
     return (

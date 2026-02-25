@@ -2,7 +2,11 @@ export default class StorageService {
     storage = localStorage
 
     get(key: string) {
-        return this.storage.getItem(key)
+        const json = this.storage.getItem(key)
+        if (json) {
+            return JSON.parse(json)
+        }
+        return null
     }
 
     set(key: string, value: string) {

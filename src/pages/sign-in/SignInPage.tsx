@@ -5,7 +5,6 @@ import CustomPassword from "../../shared/ui/CustomPassword.tsx";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {useNavigate} from "react-router";
-// import {useEffect} from "react";
 
 const LoginFormSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
