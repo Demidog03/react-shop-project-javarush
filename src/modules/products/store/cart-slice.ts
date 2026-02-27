@@ -1,5 +1,5 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import StorageService from "../services/storageService.ts";
+import StorageService from "../../../services/storageService.ts";
 
 interface CartSliceState {
     productsIdsInCart: number[]

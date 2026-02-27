@@ -1,8 +1,8 @@
 import {Badge, ListGroup, Offcanvas, Placeholder} from "react-bootstrap";
 import classes from "./Products.module.css";
 import {useNavigate} from "react-router";
-import useGetProductsByIdsQuery from "../../queries/products/useGetProductsByIdsQuery.tsx";
-import {useAppSelector} from "../../store/store.ts";
+import useGetProductsByIdsQuery from "../queries/useGetProductsByIdsQuery.tsx";
+import {useAppSelector} from "../../../store/store.ts";
 
 interface ProductsCartDrawerProps {
     open: boolean

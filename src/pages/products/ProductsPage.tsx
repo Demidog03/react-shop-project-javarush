@@ -1,4 +1,4 @@
-import ProductList from "../../components/products/ProductsList.tsx";
+import ProductList from "../../modules/products/ui/ProductsList.tsx";
 import MainLayout from "../../layouts/MainLayout.tsx";
 
 function ProductsPage() {

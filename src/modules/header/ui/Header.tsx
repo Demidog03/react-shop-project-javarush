@@ -2,9 +2,9 @@ import classes from './Header.module.css'
 import {Badge, Button, Container, Nav, Navbar} from "react-bootstrap";
 import {BsCartFill} from "react-icons/bs";
 import {useNavigate} from "react-router";
-import {useAppDispatch, useAppSelector} from "../../store/store.ts";
+import {useAppDispatch, useAppSelector} from "../../../store/store.ts";
 import {BiSolidMoon, BiSolidSun} from "react-icons/bi";
-import {changeTheme} from "../../slices/theme-slice.ts";
+import {changeTheme} from "../../theme/store/theme-slice.ts";
 import {useEffect} from "react";
 
 interface HeaderProps {
@@ -26,7 +26,7 @@ function Header({ openCartDrawer }: HeaderProps) {
     }
 
     function loadProductsPage() {
-        import('../../pages/products/ProductsPage.tsx')
+        import('../../../pages/products/ProductsPage.tsx')
     }
 
     function handleChangeTheme(theme: 'light' | 'dark') {

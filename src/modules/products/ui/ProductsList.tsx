@@ -2,9 +2,9 @@ import classes from './Products.module.css'
 import {Spinner} from "react-bootstrap";
 import {useMemo} from "react";
 import ProductCard from "./ProductCard.tsx";
-import useGetProductsQuery from "../../queries/products/useGetProductsQuery.tsx";
-import {addProductsToCart, removeProductsFromCart} from "../../slices/cart-slice.ts";
-import {useAppDispatch, useAppSelector} from "../../store/store.ts";
+import useGetProductsQuery from "../queries/useGetProductsQuery.tsx";
+import {addProductsToCart, removeProductsFromCart} from "../store/cart-slice.ts";
+import {useAppDispatch, useAppSelector} from "../../../store/store.ts";
 
 function ProductList() {
     const dispatch = useAppDispatch()

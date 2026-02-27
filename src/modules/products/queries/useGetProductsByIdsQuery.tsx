@@ -1,5 +1,5 @@
 import {useQueries} from "@tanstack/react-query";
-import productsApi from "../../apis/products/products.api.ts";
+import productsApi from "../apis/products.api.ts";
 
 export default function useGetProductsByIdsQuery(ids: string[], open: boolean) {
     return useQueries({

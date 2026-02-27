@@ -5,9 +5,10 @@ import CustomPassword from "../../shared/ui/CustomPassword.tsx";
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {useNavigate} from "react-router";
+import useRegisterMutation from "../../modules/auth/queries/useRegisterMutation.tsx";
 
 const LoginFormSchema = Yup.object().shape({
-    name: Yup.string().max(150, 'Name must be at most 150 characters').required('Name is required'),
+    fullName: Yup.string().max(150, 'Name must be at most 150 characters').required('Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().min(8, 'Must Contain 8 Characters').required('Password is required')
         .matches(
@@ -26,27 +27,28 @@ const LoginFormSchema = Yup.object().shape({
             /^(?=.*[!@#\$%\^&\*])/,
             "Must Contain One Special Case Character"
         ),
-    confirmPassword: Yup.string().oneOf([Yup.ref("password")], "Passwords must match"),
+    password_confirmation: Yup.string().oneOf([Yup.ref("password")], "Passwords must match"),
 })
 
 interface FormValues {
-    name: string;
+    fullName: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    password_confirmation: string;
 }
 
 function SignUpPage() {
     const navigate = useNavigate()
+    const { mutate } = useRegisterMutation()
     const { values, errors, handleSubmit, handleChange, isValid, dirty, resetForm, handleBlur } = useFormik<FormValues>({
         initialValues: {
-            name: '',
+            fullName: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            password_confirmation: ''
         },
         onSubmit: (values) => {
-            console.log(values)
+            mutate(values)
             resetForm()
         },
         validationSchema: LoginFormSchema,
@@ -62,11 +64,11 @@ function SignUpPage() {
             <div className={classes.formContainer}>
                 <Form onBlur={handleBlur} onSubmit={handleSubmit}>
                     <h1>Sign up</h1>
-                    <Form.Group className="mb-3" controlId="name">
-                        <Form.Label>Fullname</Form.Label>
-                        <Form.Control isInvalid={Boolean(errors.name)} value={values.name} onChange={handleChange} type="text" placeholder="Enter name" />
+                    <Form.Group className="mb-3" controlId="fullName">
+                        <Form.Label>Full name</Form.Label>
+                        <Form.Control isInvalid={Boolean(errors.fullName)} value={values.fullName} onChange={handleChange} type="text" placeholder="Enter name" />
                         <Form.Control.Feedback type="invalid">
-                            {errors.name}
+                            {errors.fullName}
                         </Form.Control.Feedback>
                     </Form.Group>
 
@@ -87,11 +89,11 @@ function SignUpPage() {
                         </CustomPassword>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="confirmPassword">
+                    <Form.Group className="mb-3" controlId="password_confirmation">
                         <Form.Label>Confirm Password</Form.Label>
-                        <CustomPassword isInvalid={Boolean(errors.confirmPassword)} value={values.confirmPassword} onChange={handleChange} placeholder="Confirm Password">
+                        <CustomPassword isInvalid={Boolean(errors.password_confirmation)} value={values.password_confirmation} onChange={handleChange} placeholder="Confirm Password">
                             <Form.Control.Feedback type="invalid">
-                                {errors.confirmPassword}
+                                {errors.password_confirmation}
                             </Form.Control.Feedback>
                         </CustomPassword>
                     </Form.Group>

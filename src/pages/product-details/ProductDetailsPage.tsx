@@ -5,8 +5,8 @@ import {Button, Card, Placeholder} from "react-bootstrap";
 import classes from './ProductDetailsPage.module.css'
 import {Rating} from "@smastrom/react-rating";
 import {BsCartDashFill, BsCartPlusFill} from "react-icons/bs";
-import useGetProductByIdQuery from "../../queries/products/useGetProductByIdQuery.tsx";
-import {addProductsToCart, removeProductsFromCart} from "../../slices/cart-slice.ts";
+import useGetProductByIdQuery from "../../modules/products/queries/useGetProductByIdQuery.tsx";
+import {addProductsToCart, removeProductsFromCart} from "../../modules/products/store/cart-slice.ts";
 import {useAppDispatch, useAppSelector} from "../../store/store.ts";
 
 function ProductDetailsPage() {
