@@ -7,6 +7,7 @@ import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {Provider} from "react-redux";
 import {store} from "./store/store.ts";
+import AuthInit from "./modules/auth/ui/AuthInit.tsx";
 
 const queryClient = new QueryClient()
 
@@ -16,6 +17,7 @@ function App() {
             <ReactQueryDevtools initialIsOpen={false} />
             <Provider store={store}>
                 <RouterProvider router={router} />
+                <AuthInit/>
             </Provider>
         </QueryClientProvider>
     )

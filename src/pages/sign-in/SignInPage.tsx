@@ -6,7 +6,9 @@ import {useFormik} from "formik";
 import * as Yup from 'yup';
 import {useNavigate} from "react-router";
 import FullscreenSpinner from "../../shared/ui/FullscreenSpinner.tsx";
-import useLoginMutation from "../../modules/auth/queries/useLoginMutation.ts";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
+import {loginThunk} from "../../modules/auth/store/auth.thunks.ts";
+// import useLoginMutation from "../../modules/auth/queries/useLoginMutation.ts";
 
 const LoginFormSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
@@ -19,16 +21,18 @@ interface FormValues {
 }
 
 function SignInPage() {
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const { mutate, isPending } = useLoginMutation()
+    const { loginLoading } = useAppSelector(state => state.auth)
+    // const { mutate, isPending } = useLoginMutation()
     const { values, errors, handleSubmit, handleChange, isValid, dirty, resetForm, handleBlur } = useFormik<FormValues>({
         initialValues: {
             email: '',
             password: ''
         },
         onSubmit: (values) => {
-            // dispatch(loginThunk(values))
-            mutate(values)
+            dispatch(loginThunk(values))
+            // mutate(values)
             resetForm()
         },
         validationSchema: LoginFormSchema,
@@ -52,7 +56,7 @@ function SignInPage() {
     return (
         <MainLayout>
             <>
-                {isPending && <FullscreenSpinner loading={isPending} withOverlay /> }
+                {loginLoading && <FullscreenSpinner loading={loginLoading} withOverlay /> }
                 <div className={classes.formContainer}>
                     <Form onBlur={handleBlur} onSubmit={handleSubmit}>
                         <h1>Sign in</h1>

@@ -18,3 +18,14 @@ export interface RegisterBody {
 export interface RegisterResponse {
     message: string
 }
+
+export interface CurrentUser {
+    id: number
+    fullName: string
+    email: string
+    createdAt: string
+    updatedAt: string
+    roleId: 1 | 2 | 3
+}
+
+export type GetMeResponse = CurrentUser
