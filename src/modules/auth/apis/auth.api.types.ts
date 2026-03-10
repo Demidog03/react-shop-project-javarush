@@ -1,6 +1,7 @@
 export interface LoginResponse {
     type: string
     token: string
+    message: string
 }
 
 export interface LoginBody {
@@ -29,3 +30,7 @@ export interface CurrentUser {
 }
 
 export type GetMeResponse = CurrentUser
+
+export interface LogoutResponse {
+    message: string
+}

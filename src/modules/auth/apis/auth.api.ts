@@ -1,25 +1,36 @@
-import axios from "axios";
-import type {GetMeResponse, LoginBody, LoginResponse, RegisterBody, RegisterResponse} from "./auth.api.types.ts";
+import type {
+    GetMeResponse,
+    LoginBody,
+    LoginResponse,
+    LogoutResponse,
+    RegisterBody,
+    RegisterResponse
+} from "./auth.api.types.ts";
+import apiPublic from "../../../shared/lib/api/apiPublic.ts";
+import apiPrivate from "../../../shared/lib/api/apiPrivate.ts";
+import Cookies from "js-cookie";
 
 async function login(body: LoginBody): Promise<LoginResponse> {
-    const response = await axios.post<LoginResponse>('http://localhost:3333/api/v1/auth/login', body)
+    const response = await apiPublic.post<LoginResponse>('/auth/login', body)
     return response.data
 }
 
 async function register(body: RegisterBody): Promise<RegisterResponse> {
-    const response = await axios.post<RegisterResponse>('http://localhost:3333/api/v1/auth/register', body)
+    const response = await apiPublic.post<RegisterResponse>('/auth/register', body)
     return response.data
 }
 
-async function getMe(token: string): Promise<GetMeResponse> {
-    const response = await axios.get<GetMeResponse>('http://localhost:3333/api/v1/users/me', {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
+async function getMe(): Promise<GetMeResponse> {
+    const response = await apiPrivate.get<GetMeResponse>('/users/me')
     return response.data
 }
 
-const authApi = { login, register, getMe }
+async function logout(): Promise<LogoutResponse> {
+    const response = await apiPrivate.get<LogoutResponse>('/auth/logout')
+    Cookies.remove('token')
+    return response.data
+}
+
+const authApi = { login, register, getMe, logout }
 
 export default authApi

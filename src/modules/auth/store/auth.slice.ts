@@ -1,6 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {authInitThunk, loginThunk} from "./auth.thunks.ts";
+import {authInitThunk, authLogoutThunk, loginThunk} from "./auth.thunks.ts";
 import type {CurrentUser} from "../apis/auth.api.types.ts";
+import toast from "react-hot-toast";
 
 interface AuthSliceState {
     token: string | null
@@ -34,12 +35,13 @@ export const authSlice = createSlice({
         builder.addCase(loginThunk.fulfilled, (state, action) => {
             state.token = action.payload.token
             state.currentUser = action.payload.user
+
+            if (action.payload.message) {
+                toast.success(action.payload.message)
+            }
         })
             .addCase(loginThunk.pending, (state) => {
                 state.loginLoading = true
-            })
-            .addCase(loginThunk.rejected, () => {
-                alert('Login failed')
             })
             .addCase(authInitThunk.fulfilled, (state, action) => {
                 if (action.payload.token) {
@@ -53,13 +55,24 @@ export const authSlice = createSlice({
             .addCase(authInitThunk.pending, (state) => {
                 state.initLoading = true
             })
+            .addMatcher(authLogoutThunk.settled, (state, action) => {
+                state.token = null
+                state.currentUser = null
+                
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                if (action?.payload?.message) {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    toast.success(action.payload.message)
+                }
+            })
             .addMatcher(authInitThunk.settled, (state) => {
                 state.initLoading = false
             })
             .addMatcher(loginThunk.settled, (state) => {
                 state.loginLoading = false
             })
-
     }
 })
 

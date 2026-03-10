@@ -9,8 +9,5 @@ export default function useRegisterMutation() {
         onSuccess: (data) => {
            alert(data.message || 'Register successful')
         },
-        onError: () => {
-            alert('Register failed')
-        }
     })
 }

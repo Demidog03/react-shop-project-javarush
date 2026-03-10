@@ -3,9 +3,11 @@ import {Badge, Button, Container, Nav, Navbar} from "react-bootstrap";
 import {BsCartFill} from "react-icons/bs";
 import {useNavigate} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../../store/store.ts";
-import {BiSolidMoon, BiSolidSun} from "react-icons/bi";
+import {BiSolidExit, BiSolidMoon, BiSolidSun} from "react-icons/bi";
 import {changeTheme} from "../../theme/store/theme-slice.ts";
 import {useEffect} from "react";
+import {authLogoutThunk} from "../../auth/store/auth.thunks.ts";
+import authApi from "../../auth/apis/auth.api.ts";
 
 interface HeaderProps {
     openCartDrawer: () => void
@@ -16,6 +18,7 @@ function Header({ openCartDrawer }: HeaderProps) {
     const navigate = useNavigate()
     const {productsIdsInCart} = useAppSelector(state => state.cart);
     const { theme } = useAppSelector(state => state.theme)
+    const { currentUser } = useAppSelector(state => state.auth)
 
     function goHome() {
         navigate('/')
@@ -31,6 +34,14 @@ function Header({ openCartDrawer }: HeaderProps) {
 
     function handleChangeTheme(theme: 'light' | 'dark') {
         dispatch(changeTheme(theme))
+    }
+
+    function handleClickLogout() {
+        dispatch(authLogoutThunk())
+    }
+
+    function test401() {
+        authApi.getMe()
     }
 
     useEffect(() => {
@@ -57,13 +68,26 @@ function Header({ openCartDrawer }: HeaderProps) {
                                 <BiSolidMoon size="25" />
                             </Button>
                         )}
-                        <Button className={classes.cartButton} onClick={openCartDrawer} variant="outline-primary">
-                            <BsCartFill size="25" />
-                            <Badge pill bg="danger">{productsIdsInCart.length}</Badge>
-                        </Button>
-                        <Button onClick={goToSignInPage} variant="primary">
-                            Sign in
-                        </Button>
+                        {currentUser && (
+                            <Button className={classes.cartButton} onClick={openCartDrawer} variant="outline-primary">
+                                <BsCartFill size="25" />
+                                <Badge pill bg="danger">{productsIdsInCart.length}</Badge>
+                            </Button>
+                        )}
+                        {/*<Button onClick={test401} variant="primary">*/}
+                        {/*    Test 401*/}
+                        {/*</Button>*/}
+                        {!currentUser && (
+                            <Button onClick={goToSignInPage} variant="primary">
+                                Sign in
+                            </Button>
+                        )}
+                        {currentUser && (
+                            <Button className={classes.logoutButton} onClick={handleClickLogout} variant="warning">
+                                <BiSolidExit size="20"/>
+                                <span>Logout</span>
+                            </Button>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

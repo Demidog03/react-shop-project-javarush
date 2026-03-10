@@ -13,8 +13,5 @@ export default function useLoginMutation() {
         onSuccess: (data) => {
             dispatch(addToken(data.token))
         },
-        onError: () => {
-            alert('Login failed')
-        }
     })
 }

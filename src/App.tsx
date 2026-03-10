@@ -8,6 +8,7 @@ import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {Provider} from "react-redux";
 import {store} from "./store/store.ts";
 import AuthInit from "./modules/auth/ui/AuthInit.tsx";
+import {Toaster} from "react-hot-toast";
 
 const queryClient = new QueryClient()
 
@@ -18,6 +19,7 @@ function App() {
             <Provider store={store}>
                 <RouterProvider router={router} />
                 <AuthInit/>
+                <Toaster />
             </Provider>
         </QueryClientProvider>
     )
