@@ -1,13 +1,21 @@
 export interface Product {
-    category: string;
-    description: string;
-    id: number
-    image: string;
-    price: number;
-    rating: {
-        rate: number;
-        count: number;
-    }
+    id: number;
     title: string;
+    slug: string;
+    price: number;
+    description: string;
+    category: ProductCategory;
+    images: string[];
+    creationAt: string;
+    updatedAt: string;
     isInCart: boolean;
+}
+
+export interface ProductCategory {
+    id: number;
+    name: string;
+    slug: string;
+    image: string;
+    creationAt: string;
+    updatedAt: string;
 }

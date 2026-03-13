@@ -38,7 +38,7 @@ function ProductDetailsPage() {
                 )}
                 {!loading && product && (
                         <Card className={classes.card}>
-                            <Card.Img className={classes.image} variant="top" src={product?.image} />
+                            <Card.Img className={classes.image} variant="top" src={product?.images?.[0] ?? ''} />
                             <Card.Body className={classes.cardBody}>
                                 <Card.Title>
                                     {product?.title}
@@ -54,10 +54,10 @@ function ProductDetailsPage() {
                                     <Card.Text className={classes.ratingContainer}>
                                         <Rating
                                             style={{ width: '50%', maxWidth: 300 }}
-                                            value={product?.rating?.rate ?? 0}
+                                            value={5}
                                             readOnly
                                         />
-                                        <span className={classes.ratingCount}>({product?.rating?.count})</span>
+                                        <span className={classes.ratingCount}>({5})</span>
                                     </Card.Text>
                                 </div>
                                 {product?.isInCart

@@ -58,7 +58,7 @@ function ProductsCartDrawer({ open, handleClose }: ProductsCartDrawerProps) {
                             style={{ cursor: 'pointer' }}
                         >
                             <div className={classes.productCartItemContent}>
-                                <img className={classes.productCartItemImage} src={product?.image} alt={product?.title}/>
+                                <img className={classes.productCartItemImage} src={product?.images[0]} alt={product?.title}/>
                                 <div className="ms-2 me-auto">
                                     <div className={classes.productCartItemTitle}>{product?.title}</div>
                                     <span className={classes.productCartItemPrice}>${product?.price} <span className={classes.productCartItemPriceFake}>${((product?.price || 0) * 1.5).toFixed(2)}</span></span>
